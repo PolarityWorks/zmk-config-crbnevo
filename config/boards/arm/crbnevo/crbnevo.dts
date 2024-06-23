@@ -54,7 +54,6 @@
 		label = "Backlight LEDs";
 		pwm_led_0 {
 			pwms = <&pwm0 0 10000 PWM_POLARITY_NORMAL>;
-			label = "Backlight LED 0";
 		};
 	};
 
@@ -81,11 +80,27 @@
 
 &pwm0 {
 	status = "okay";
-	ch0-pin = <40>;
+	pinctrl-0 = <&pwm0_default>;
+	pinctrl-1 = <&pwm0_sleep>;
+	pinctrl-names = "default", "sleep";
 };
 
 &gpiote {
 	status = "okay";
+};
+
+&pinctrl {
+	pwm0_default: pwm0_default {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 1, 8)>;
+		};
+	};
+	pwm0_sleep: pwm0_sleep {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 1, 8)>;
+			low-power-enable;
+		};
+	};
 };
 
 &gpio0 {
